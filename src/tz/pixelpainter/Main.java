@@ -8,7 +8,8 @@ public class Main {
         int pixelSize = 20;
 
         Canvas canvas = new Canvas();
-        canvas.start(width, height, pixelSize);
+        canvas.initializeCanvas(width,height,pixelSize);
+        canvas.start();
 
     }
 }

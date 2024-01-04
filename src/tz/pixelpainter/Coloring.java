@@ -44,12 +44,20 @@ public class Coloring {
         cursorSquareX = movement.getCursorIndexX();
         cursorSquareY = movement.getCursorIndexY();
 
-        if (canvas.getIndividualSquares()[cursorSquareY][cursorSquareX].isFilled()) {
-            canvas.getIndividualSquares()[cursorSquareY][cursorSquareX].delete();
-            canvas.getIndividualSquares()[cursorSquareY][cursorSquareX].setColor(gridColor);
-            canvas.getIndividualSquares()[cursorSquareY][cursorSquareX].draw();
+        if (verifyIfFilled(cursorSquareY,cursorSquareX)) {
+            resetIndividualSquare(cursorSquareY,cursorSquareX);
         }
         cursor.cursorReFill();
+    }
+
+    private boolean verifyIfFilled(int y, int x){
+        return canvas.getIndividualSquares()[y][x].isFilled();
+    }
+
+    private void resetIndividualSquare(int y, int x){
+        canvas.getIndividualSquares()[y][x].delete();
+        canvas.getIndividualSquares()[y][x].setColor(gridColor);
+        canvas.getIndividualSquares()[y][x].draw();
     }
 
     public void colorBlack() {

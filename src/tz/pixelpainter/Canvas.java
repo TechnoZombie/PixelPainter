@@ -34,49 +34,68 @@ public class Canvas {
         return individualSquares;
     }
 
-    public void start(int width, int height, int pixelSize) {
+
+    protected void initializeCanvas(int width, int height, int pixelSize){
         this.width = width;
         this.height = height;
         this.pixelSize = pixelSize;
-        cursor = new Cursor(pixelSize);
+    }
+
+    public void start() {
+        cursor = new Cursor(this.pixelSize);
         movement = new Movement(cursor, this);
         coloring = new Coloring(movement, cursor, this);
         messages = new Messages();
         keyboardController = new KeyboardController(movement, coloring);
 
-        // Creates canvas as a big rectangle
-        canvas = new Rectangle(1, 1, this.width, this.height);
-        canvas.setColor(Color.BLACK);
-        canvas.draw();
+        drawCanvas();
 
-        // Calculate the number of horizontal squares and vertical lines
-        int numHorizontalSquares = this.width / pixelSize;
-        int numVerticalLines = this.height / pixelSize;
+        int numHorizontalSquares = calculateUtil(width);
+        int numVerticalLines = calculateUtil(height);
 
         // Initialize the two-dimensional array with the correct size
         individualSquares = new Rectangle[numVerticalLines][numHorizontalSquares];
 
-        // Creates grid of squares
-        for (int i = 0; i < numVerticalLines; i++) {
-            for (int j = 0; j < numHorizontalSquares; j++) {
-                individualSquares[i][j] = new Rectangle(1 + (j * pixelSize), 1 + (i * pixelSize), pixelSize, pixelSize);
-                individualSquares[i][j].setColor(Color.BLACK);
-                individualSquares[i][j].draw();
-            }
-        }
+        createGridOfSquares(numVerticalLines,numHorizontalSquares);
+
         //Filling the cursor needs to come last so that it over-imposes other elements of the grid
         cursor.cursorFill();
 
         messages.userText();
+    }
 
-/*        // Print information about individual squares
+    /*
+     *  Creates canvas as a big rectangle
+     */
+    private void drawCanvas(){
+        canvas = new Rectangle(1, 1, this.width, this.height);
+        canvas.setColor(Color.BLACK);
+        canvas.draw();
+    }
+
+    /*
+     *  Calculate the number of horizontal squares and vertical lines
+     */
+    private int calculateUtil(int value){return value / this.pixelSize;}
+
+    /*
+    *  Creates grid of squares
+    */
+    private void createGridOfSquares(int numVerticalLines, int numHorizontalSquares){
         for (int i = 0; i < numVerticalLines; i++) {
             for (int j = 0; j < numHorizontalSquares; j++) {
-                Rectangle square = individualSquares[i][j];
-                System.out.println("X: " + square.getX() + ", Y: " + square.getY() +
-                        ", Color: " + square.getColor());
+
+                individualSquares[i][j] = new Rectangle(
+                        (1 + (j * pixelSize)),
+                        (1 + (i * pixelSize)),
+                        pixelSize,
+                        pixelSize
+                );
+
+                individualSquares[i][j].setColor(Color.BLACK);
+                individualSquares[i][j].draw();
             }
-        }*/
+        }
     }
 
 }
